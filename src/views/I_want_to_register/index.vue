@@ -51,10 +51,15 @@
           </el-form-item>
         </el-form>
       </el-card>
-      <el-card>
+      <el-card style="max-height:800px">
         <div slot="header" class="clearfix">
-          <span>最近登记记录</span>
+          <span>今日登记记录</span>
+          <el-button style="float: right; padding: 3px 0" type="text">清空</el-button>
         </div>
+        <i class="el-icon-time" />
+        刚刚:刘旭登记了1件 <span><el-tag> 02-62-3369-00-01(A)</el-tag></span> 大底座 全检 的 成品
+        <div />
+
       </el-card>
     </div>
 
@@ -82,12 +87,17 @@ export default ({
         resource: '',
         desc: ''
       }
+
     }
+  },
+  computed: {
+
   },
   methods: {
     onSubmit() {
       console.log('submit!')
     }
+
   }
 })
 </script>
