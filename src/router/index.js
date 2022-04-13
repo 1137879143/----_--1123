@@ -54,7 +54,7 @@ export const constantRoutes = [
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
-
+  // I_want_to_register
   {
     path: '/example',
     component: Layout,
@@ -62,6 +62,12 @@ export const constantRoutes = [
     name: '品质管理',
     meta: { title: '品质管理', icon: 'el-icon-s-help' },
     children: [
+      {
+        path: 'I_want_to_register',
+        name: 'I_want_to_register',
+        component: () => import('@/views/I_want_to_register/index'),
+        meta: { title: '我要登记', icon: 'el-icon-smoking' }
+      },
       {
         path: 'table',
         name: '检验登记',

@@ -45,7 +45,7 @@ const responseFake = (url, type, respond) => {
 
 module.exports = app => {
   // parse app.body
-  // https://expressjs.com/en/4x/api.html#req.body
+  // https://expressjs.com/en/4xhttp://127.0.0.1:8080/api.html#req.body
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true

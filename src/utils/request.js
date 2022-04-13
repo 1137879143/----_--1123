@@ -5,8 +5,8 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com', // url = base url + request url https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com
-  // baseURL: 'http://127.0.0.1:8080', // url = base url + request url https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com
+  //  baseURL: '', // url = base url + request url
+  baseURL: 'http://127.0.0.1:8080', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })

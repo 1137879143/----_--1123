@@ -181,7 +181,7 @@ export default {
 
       // console.log(tou)
       axios
-        .post('https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com/api/P_inspection', {
+        .post('http://127.0.0.1:8080/api/P_inspection', {
           currentPage: currentPage,
           pageSize: pageSize
         })
@@ -207,7 +207,7 @@ export default {
       that.listLoading = true
       if (that.searchinput) {
         axios
-          .post('https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com/api/P_get_title', {
+          .post('http://127.0.0.1:8080/api/P_get_title', {
             title: that.searchinput,
             currentPage: that.currentPage,
             pageSize: that.pageSize
@@ -221,7 +221,7 @@ export default {
           })
       } else {
         axios
-          .post('https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com/api/P_inspection', {
+          .post('http://127.0.0.1:8080', {
             currentPage: that.currentPage,
             pageSize: that.pageSize
           })
@@ -249,7 +249,7 @@ export default {
           // console.log(row.id)
           // 发送请求到服务器
           axios
-            .post('https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com/api/deleteRecord', {
+            .post('http://127.0.0.1:8080/api/deleteRecord', {
               id: row.id
             })
             .then(function(response) {
@@ -273,7 +273,7 @@ export default {
       this.dialogVisible = true
       // console.log(row)
       this.dialogTitle = row
-      axios.post('https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com/api/getComment', {
+      axios.post('http://127.0.0.1:8080/api/getComment', {
         id: row.id
       })
         .then(function(response) {
@@ -297,7 +297,7 @@ export default {
           // 发送请求到服务器
           axios({
             method: 'post',
-            url: 'https://express-oi2w-1735251-1309420024.ap-shanghai.run.tcloudbase.com/api/getAllRecord',
+            url: 'http://127.0.0.1:8080/api/getAllRecord',
             responseType: 'blob'
           }).then(response => {
             const blob = new Blob([response.data])
