@@ -13,8 +13,20 @@
         </el-col>
         <!-- <el-date-picker type="date" placeholder="选择日期" /> -->
         <!-- <el-date-picker type="date" placeholder="选择日期" /> -->
+        <span>日期筛选 </span>
+        <el-date-picker
+          v-model="date_picker"
+          type="daterange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+        />
+
         <el-button icon="el-icon-download" @click="downloadexcel">导出为EXCLE</el-button>
-        <el-button icon="el-icon-refresh" @click="fetchData" />
+        <el-button icon="el-icon-refresh" @click="fetchData(currentPage, pageSize)" />
       </el-row>
 
       <el-table
@@ -31,9 +43,11 @@
         <el-table-column align="left" label="送检人" width="100">
           <template slot-scope="scope">
             <i class="el-icon-user" />
-            {{ scope.row.comments[0].name }}
+            {{ scope.row.people }}
           </template>
         </el-table-column>
+        <el-table-column prop="jobs" label="来源" width="100" />
+
         <!-- <el-table-column prop="id" label="id" width="50" /> -->
 
         <el-table-column prop="createdAt" label="登记时间" width="180">
@@ -50,12 +64,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="parts_name" label="零件名称" width="180" />
+        <el-table-column prop="version" label="版本" width="50" />
         <el-table-column prop="Parts_project" label="项目" width="120" />
-        <el-table-column align="center" label="数量" width="60">
-          <template slot-scope="scope">
-            {{ scope.row.comments[0].count }}
-          </template>
-        </el-table-column>
+        <el-table-column prop="count" label="数量" width="60" />
+        <el-table-column prop="target" label="目的" width="60" />
 
         <el-table-column
           prop="parts_details_list"
@@ -66,13 +78,13 @@
           <template slot-scope="scope">
             <el-tag
               effect="dark"
-              :type="
-                scope.row.parts_details_list === 'OK' ? 'success' : 'danger'
-              "
+              :type="success"
               disable-transitions
-            >{{ scope.row.parts_details_list }}</el-tag>
+            >{{ scope.row.parts_state }}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="note" label="备注" width="100" />
+
         <el-table-column prop="updatedAt" label="最后更新时间" width="180">
           <template slot-scope="scope">
             <i class="el-icon-time" />
@@ -158,16 +170,44 @@ export default {
       listLoading: true,
       listcount: null,
       currentPage: 1, // 初始页
-      pageSize: 50, //    每页的数据
-      pageSize1: 100, //    每页的数据
-      pageSize2: 150, //    每页的数据
+      pageSize: 20, //    每页的数据
+      pageSize1: 50, //    每页的数据
+      pageSize2: 100, //    每页的数据
       pageSize3: 200, //    每页的数据
       // 搜索框
       searchinput: '',
       // 提示面板
       dialogVisible: false,
       dialogList: '',
-      dialogTitle: ''
+      dialogTitle: '',
+      date_picker: '', // 日期筛选
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      }
     }
   },
   created() {
@@ -204,6 +244,7 @@ export default {
     // 搜索文件
     search_button() {
       var that = this
+      console.log(this.date_picker)
       that.listLoading = true
       if (that.searchinput) {
         axios
@@ -221,7 +262,7 @@ export default {
           })
       } else {
         axios
-          .post('http://127.0.0.1:8080', {
+          .post('http://127.0.0.1:8080/api/P_inspection', {
             currentPage: that.currentPage,
             pageSize: that.pageSize
           })
